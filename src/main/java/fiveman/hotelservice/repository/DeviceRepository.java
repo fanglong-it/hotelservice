@@ -1,0 +1,15 @@
+package fiveman.hotelservice.repository;
+
+import fiveman.hotelservice.entities.Device;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface DeviceRepository extends JpaRepository<Device, Long> {
+    List<Device> findDeviceByBrand_Id(long id);
+    boolean deleteDeviceById(long id);
+    Device findDeviceById(long id);
+
+}
