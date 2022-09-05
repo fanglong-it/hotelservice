@@ -15,12 +15,12 @@ import java.util.Set;
 @Entity
 @Table(name = "brand")
 public class Brand implements Serializable {
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 321994554501884556L;
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-
-
-
-
 }

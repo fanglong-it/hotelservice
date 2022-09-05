@@ -2,8 +2,6 @@ package fiveman.hotelservice.entities;
 
 
 import lombok.*;
-import org.springframework.validation.annotation.Validated;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -16,10 +14,18 @@ import java.io.Serializable;
 @Entity
 @Table(name = "devices")
 public class Device implements Serializable {
-    @Id
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6208328601953313129L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
     private String name;
+    
     private String description;
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -4,10 +4,12 @@ package fiveman.hotelservice.controller;
 import fiveman.hotelservice.entities.Device;
 import fiveman.hotelservice.service.BrandService;
 import fiveman.hotelservice.service.DeviceService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -17,35 +19,29 @@ public class DeviceController {
 
 
     @Autowired
-    DeviceService deviceService;
-    @Autowired
-    BrandService brandService;
-
+    private DeviceService deviceService;
 
     @GetMapping("/devices")
-    List<Device> getDevices(){
-        return deviceService.getDevices();
+    public ResponseEntity<List<Device>> getDevices(){
+    	return new ResponseEntity<List<Device>>(deviceService.getDevices(), HttpStatus.OK);	
     }
 
     @GetMapping("/device/{id}")
-    ResponseEntity<Device> getDevice(@PathVariable("id") long id){
-        return deviceService.getDevice(id);
+    public ResponseEntity<Device> getDevice(@PathVariable("id") long id){
+    	return new ResponseEntity<Device>(deviceService.getDevice(id), HttpStatus.OK);	
     }
 
     @PostMapping("/device")
-    ResponseEntity<Device> insertDevice(@RequestBody Device device){
-
-        if(!deviceService.getDevicesByBrandId(device.getBrand().getId()).isEmpty()){
-            device.setBrand(brandService.getBrandById(device.getBrand().getId()));
-            deviceService.saveDevice(device);
-            return deviceService.getDevice(device.getId());
-        }else{
-            return null;
-        }
+    public ResponseEntity<Device> insertDevice(@RequestBody Device device){
+    	boolean result = deviceService.addDevice(device);
+    	if(!result) {
+    		return null;
+    	}
+    	return new ResponseEntity<Device>(device, HttpStatus.OK);
     }
 
     @DeleteMapping("/device/{id}")
-    Boolean deleteDevice(@PathVariable("id") long id){
+    public Boolean deleteDevice(@PathVariable("id") long id){
         return deviceService.deleteDevice(id);
     }
 }
