@@ -31,5 +31,7 @@ public class Device implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     private Brand brand;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Hotel hotel;
 
 }
