@@ -65,7 +65,6 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 }
             }else{
                 filterChain.doFilter(request, response);
-                throw new AppException(HttpStatus.UNAUTHORIZED.value(), "Can't find Bearer Token!");
             }
         }
     }

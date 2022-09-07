@@ -9,6 +9,7 @@ import fiveman.hotelservice.entities.Role;
 import fiveman.hotelservice.entities.User;
 import fiveman.hotelservice.exception.AppException;
 import fiveman.hotelservice.service.UserService;
+import io.swagger.annotations.*;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
 import static java.util.Arrays.stream;
 
 @RestController
+@Api(tags = "User")
 @RequestMapping("/api/v1")
 public class UserController {
     @Autowired
@@ -40,6 +42,18 @@ public class UserController {
     @GetMapping("/users")
     public ResponseEntity<List<User>> getUsers(){
         return  ResponseEntity.ok().body(userService.getUsers());
+    }
+
+
+    @PostMapping("/signin")
+    @ApiOperation(value = "${UserController.signin}")
+    @ApiResponses(value = {//
+            @ApiResponse(code = 400, message = "Something went wrong"), //
+            @ApiResponse(code = 422, message = "Invalid username/password supplied")})
+    public String login(//
+                        @ApiParam("Username") @RequestParam String username, //
+                        @ApiParam("Password") @RequestParam String password) {
+        return userService.signin(username, password);
     }
 
     @PostMapping("/user/save")

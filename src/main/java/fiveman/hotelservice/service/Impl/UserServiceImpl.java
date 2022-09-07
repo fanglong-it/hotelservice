@@ -6,16 +6,16 @@ import fiveman.hotelservice.exception.AppException;
 import fiveman.hotelservice.repository.RoleRepository;
 import fiveman.hotelservice.repository.UserRepository;
 import fiveman.hotelservice.service.UserService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,8 +38,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     RoleRepository roleRepository;
 
-    public UserServiceImpl() {
-    }
 
 
     @Override
@@ -88,4 +86,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
 
+    public String signin(String username, String password) {
+        try {
+            User user = userRepository.findUserByUsername(username);
+            Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+            user.getRoles().forEach(role -> {
+                authorities.add(new SimpleGrantedAuthority(role.getName()));
+            });
+
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, userRepository.findUserByUsername(username), authorities );
+            return usernamePasswordAuthenticationToken.toString();
+        } catch (AuthenticationException e) {
+            throw new AppException(HttpStatus.UNPROCESSABLE_ENTITY.value(), "Invalid username/password supplied");
+        }
+    }
 }
