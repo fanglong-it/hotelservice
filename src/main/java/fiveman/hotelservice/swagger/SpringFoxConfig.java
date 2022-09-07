@@ -1,4 +1,4 @@
-package fiveman.hotelservice.config;
+package fiveman.hotelservice.swagger;
 
 
 import org.springframework.context.annotation.Bean;

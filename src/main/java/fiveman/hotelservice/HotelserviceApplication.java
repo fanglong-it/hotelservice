@@ -1,32 +1,18 @@
 package fiveman.hotelservice;
 
-import fiveman.hotelservice.entities.Device;
-import fiveman.hotelservice.entities.Role;
-import fiveman.hotelservice.entities.User;
-import fiveman.hotelservice.service.DeviceService;
+
 import fiveman.hotelservice.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import springfox.documentation.swagger2.mappers.ModelMapper;
 
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Set;
 
 @SpringBootApplication
 public class HotelserviceApplication {
     public static void main(String[] args) {
         SpringApplication.run(HotelserviceApplication.class, args);
-    }
-
-
-    @Bean
-    PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
     }
 
     @Bean

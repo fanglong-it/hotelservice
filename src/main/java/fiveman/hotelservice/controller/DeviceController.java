@@ -5,6 +5,7 @@ import fiveman.hotelservice.entities.Device;
 import fiveman.hotelservice.service.BrandService;
 import fiveman.hotelservice.service.DeviceService;
 
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@Api(tags = "device")
 @RequestMapping("/api/v1/")
 public class DeviceController {
 

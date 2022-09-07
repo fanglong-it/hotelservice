@@ -1,6 +1,7 @@
 package fiveman.hotelservice.entities;
 
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "role")
-public class Role {
+public class Role{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Data
@@ -20,6 +21,9 @@ public class User {
     private String name;
     private String username;
     private String password;
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Role.class)
-    private Collection<Role> roles = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.EAGER,
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private List<Role> roles = new ArrayList<>();
+
 }

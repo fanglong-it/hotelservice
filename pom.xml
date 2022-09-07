@@ -96,6 +96,12 @@
             <artifactId>springfox-bean-validators</artifactId>
             <version>3.0.0</version>
         </dependency>
+        <dependency>
+            <!-- JSON Web Token Support -->
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
         <!--End of swagger dependency-->
     </dependencies>
 
