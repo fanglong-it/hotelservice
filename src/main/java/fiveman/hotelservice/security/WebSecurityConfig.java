@@ -21,6 +21,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   private final JwtTokenProvider jwtTokenProvider;
 
+  private final String[] permitURL = {
+          "/api/v1/login",
+          "/api/v1/signup",
+          "/h2-console/**/**",
+          "/api/v1/role/save"
+  };
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
@@ -32,14 +38,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     // Entry points
     http.authorizeRequests()//
-        .antMatchers("/api/v1/login").permitAll()//
-        .antMatchers("/api/v1/signup").permitAll()//
-        .antMatchers("/h2-console/**/**").permitAll()
+        .antMatchers(permitURL).permitAll()//
         // Disallow everything else..
         .anyRequest().authenticated();
 
     // If a user try to access a resource without having enough permissions
-    http.exceptionHandling().accessDeniedPage("/login");
+    http.exceptionHandling().accessDeniedPage("/accessDenied/msg");
 
     // Apply JWT
     http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));

@@ -15,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +47,8 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public Role saveRole(Role role) {
-        return roleRepository.save(role);
+        roleRepository.save(role);
+        return roleRepository.findRoleByName(role.getName());
     }
 
     @Override

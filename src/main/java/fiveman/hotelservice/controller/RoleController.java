@@ -22,6 +22,7 @@ import java.net.URI;
 @Api(tags = "Role")
 @RequestMapping("/api/v1")
 public class RoleController {
+
     @Autowired
     UserService userService;
 
@@ -30,9 +31,8 @@ public class RoleController {
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-    public ResponseEntity<Role> saveRole(@RequestBody Role role){
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/role/save").toUriString());
-        return ResponseEntity.created(uri).body(userService.saveRole(role));
+    public Role saveRole(@RequestBody Role role){
+        return userService.saveRole(role);
     }
 
 
