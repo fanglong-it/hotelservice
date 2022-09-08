@@ -29,15 +29,12 @@ public class OverviewServiceServiceImpl implements OverviewServiceService{
 
 	@Override
 	public OverviewService getOverviewService(long id) {
-		Optional<OverviewService> overviewService = overviewServiceRepository.findById(id);
+		OverviewService overviewService = overviewServiceRepository.findOverviewServiceById(id);
 		if(overviewService != null) {
-			OverviewService dto = overviewService.orElseGet(null);
-			if(dto == null) {			
-				throw new AppException(HttpStatus.NOT_FOUND.value(), "Not found id = "+id);   
-			}
-			return dto;
+			return overviewService;
+		}else{
+			throw new AppException(HttpStatus.NOT_FOUND.value(), "Not found id = "+id);
 		}
-		return null;
 	}
 
 	@Override
