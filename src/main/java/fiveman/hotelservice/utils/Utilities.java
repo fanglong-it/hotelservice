@@ -1,11 +1,10 @@
 package fiveman.hotelservice.utils;
 
 public class Utilities {
-	
-	public static boolean checkEmptyString(String result) {
-		if(result.isEmpty() || result.trim().isEmpty() || result == null) {
-			return false;
+	public static boolean isEmptyString(String result) {
+		if(result == null || result.trim().isEmpty() || result.isEmpty()) {
+			return true;
 		}
-		return true;
+		return false;
 	}
 }
