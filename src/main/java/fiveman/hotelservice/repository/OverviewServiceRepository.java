@@ -7,5 +7,5 @@ import fiveman.hotelservice.entities.OverviewService;
 
 @Repository
 public interface OverviewServiceRepository extends JpaRepository<OverviewService, Long>{
-
+    OverviewService findOverviewServiceById(Long id);
 }
