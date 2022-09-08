@@ -5,36 +5,19 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fiveman.hotelservice.dto.RoleToUserDTO;
 import fiveman.hotelservice.dto.UserResponseDTO;
-import fiveman.hotelservice.entities.Role;
 import fiveman.hotelservice.entities.User;
-import fiveman.hotelservice.exception.AppException;
 import fiveman.hotelservice.service.UserService;
 import io.swagger.annotations.*;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import springfox.documentation.swagger2.mappers.ModelMapper;
+
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.net.URI;
 import java.util.*;
-import java.util.stream.Collectors;
 
-import static java.util.Arrays.stream;
 
 @RestController
 @Api(tags = "User")
