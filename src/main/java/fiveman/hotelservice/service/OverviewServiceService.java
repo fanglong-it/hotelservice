@@ -8,7 +8,6 @@ public interface OverviewServiceService {
 	List<OverviewService> getAllOverviewService();
 	OverviewService getOverviewService(long id);
 	OverviewService addOverviewService(OverviewService overviewService);
-	boolean updateOverviewService(OverviewService overviewService);
+	OverviewService updateOverviewService(OverviewService overviewService);
 	boolean deleteOverviewService(long id);
-	
 }

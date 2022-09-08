@@ -7,6 +7,7 @@ import fiveman.hotelservice.repository.RoleRepository;
 import fiveman.hotelservice.repository.UserRepository;
 import fiveman.hotelservice.security.JwtTokenProvider;
 import fiveman.hotelservice.service.UserService;
+import fiveman.hotelservice.utils.Common;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User saveUser(User user) {
+        List<Role> roles = new ArrayList<>();
+        roles.add(roleRepository.findRoleByName(Common.USER));
+        user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
@@ -102,10 +106,7 @@ public class UserServiceImpl implements UserService{
             if (!userRepository.existsByUsername(user.getUsername())) {
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
                 List<Role> roles = new ArrayList<>();
-                List<Role> userRoleInsert = user.getRoles();
-                for (int i = 0; i < userRoleInsert.size(); i++) {
-                    roles.add(roleRepository.findRoleByName(userRoleInsert.get(i).getName()));
-                }
+                roles.add(roleRepository.findRoleByName(Common.USER));
                 user.setRoles(roles);
                 userRepository.save(user);
                 Collection<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();

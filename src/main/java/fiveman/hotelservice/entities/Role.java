@@ -1,5 +1,6 @@
 package fiveman.hotelservice.entities;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -18,6 +19,7 @@ import java.util.Set;
 public class Role{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(required = true)
     private long id;
     private String name;
 

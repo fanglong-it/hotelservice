@@ -1,10 +1,13 @@
 package fiveman.hotelservice.entities;
 
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -17,20 +20,21 @@ import java.util.Set;
 public class Hotel{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(required = true)
     private long id;
     private String name;
     private String phoneNumber;
     private String description;
     private String longtidude;
     private String latitude;
-    @OneToMany(mappedBy = "hotel", targetEntity = Device.class)
+    @OneToMany(fetch = FetchType.EAGER, targetEntity = Device.class)
     private Set<Device> devices;
 
-    @ManyToMany(targetEntity = Location.class)
-    Set<Location> locations;
+    @ManyToMany(fetch = FetchType.LAZY,targetEntity = Location.class)
+    private List<Location> locations = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = ServiceProvider.class)
-    private Set<ServiceProvider> serviceProviders;
+    private List<ServiceProvider> serviceProviders = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = Category.class)
     private Category category;

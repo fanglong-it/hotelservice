@@ -1,11 +1,14 @@
 package fiveman.hotelservice.entities;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -17,6 +20,7 @@ import java.util.Set;
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(required = true)
     private long id;
     private String bookingDate;
     private String bookingTime;
@@ -25,15 +29,15 @@ public class Booking {
     private int numAdults;
     private int numChildren;
 
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Customer.class)
-    private Set<Customer> customers;
+//    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Customer.class)
+//    private List<Customer> customers = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = Room.class)
     private Room room;
 
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = Problem.class)
-    private Set<Problem> problems;
+    private List<Problem> problems = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Bill.class)
-    private Set<Bill> bills;
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Bill.class, mappedBy = "bookings")
+    private List<Bill> bills = new ArrayList<>();
 }
