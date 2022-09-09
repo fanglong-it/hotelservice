@@ -2,17 +2,24 @@ package fiveman.hotelservice;
 
 
 import fiveman.hotelservice.service.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import springfox.documentation.swagger2.mappers.ModelMapper;
 
 
 @SpringBootApplication
 public class HotelserviceApplication {
     public static void main(String[] args) {
         SpringApplication.run(HotelserviceApplication.class, args);
+    }
+
+
+
+    @Bean
+    ModelMapper modelMapper(){
+        return new ModelMapper();
     }
 
     @Bean

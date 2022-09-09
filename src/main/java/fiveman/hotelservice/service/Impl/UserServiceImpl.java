@@ -43,6 +43,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User saveUser(User user) {
+        List<Role> roles = new ArrayList<>();
+        roles.add(roleRepository.findRoleByName(Common.USER));
+        user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
@@ -119,6 +122,7 @@ public class UserServiceImpl implements UserService{
 //                });
 //                return jwtTokenProvider.createToken(user.getUsername(), grantedAuthorities);
                 
+
             }
             String name = Utilities.checkEmptyString(user.getName()) ? Common.USER_NAME : user.getName();
             user.setName(name);

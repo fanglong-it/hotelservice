@@ -1,6 +1,7 @@
 package fiveman.hotelservice.entities;
 
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,6 +23,7 @@ public class Device implements Serializable {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(required = true)
     private Long id;
     
     private String name;

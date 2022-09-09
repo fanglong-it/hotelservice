@@ -25,7 +25,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
           "/api/v1/login",
           "/api/v1/signup",
           "/h2-console/**/**",
-          "/api/v1/role/save"
+          "/api/v1/role/save",
+          "/api/v1/overview/**/**"
   };
   @Override
   protected void configure(HttpSecurity http) throws Exception {
