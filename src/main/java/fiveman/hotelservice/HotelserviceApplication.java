@@ -16,14 +16,13 @@ public class HotelserviceApplication {
     }
 
 
-
     @Bean
-    ModelMapper modelMapper(){
+    ModelMapper modelMapper() {
         return new ModelMapper();
     }
 
     @Bean
-    CommandLineRunner run(UserService userService){
+    CommandLineRunner run(UserService userService) {
         return args -> {
 //            userService.saveRole(new Role(0, "ROLE_USER"));
 //            userService.saveRole(new Role(0, "ROLE_MANAGER"));

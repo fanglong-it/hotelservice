@@ -1,5 +1,6 @@
 package fiveman.hotelservice.service.Impl;
 
+import fiveman.hotelservice.dto.UserResponseDTO;
 import fiveman.hotelservice.entities.Role;
 import fiveman.hotelservice.entities.User;
 import fiveman.hotelservice.exception.AppException;
@@ -12,6 +13,7 @@ import fiveman.hotelservice.utils.Common;
 import fiveman.hotelservice.utils.Utilities;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,7 +31,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
@@ -56,21 +58,8 @@ public class UserServiceImpl implements UserService{
         return roleRepository.findRoleByName(role.getName());
     }
 
-    @Override
-    public String addRoleToUser(String username, String roleName) {
-        if(userRepository.existsByUsername(username) || !roleName.equals(Common.ROLE_ADMIN)){
-            User user = userRepository.findUserByUsername(username);
-            Role role = roleRepository.findRoleByName(roleName);
-            List<Role> roles = user.getRoles();
-            roles.add(role);
-            user.setRoles(roles);
-            userRepository.save(user);
-        }else{
-            throw new AppException(HttpStatus.NOT_FOUND.value(), "Can't found username!");
-        }
-
-        return username;
-    }
+    @Autowired
+    ModelMapper modelMapper;
 
 
     @Override
@@ -78,14 +67,35 @@ public class UserServiceImpl implements UserService{
         return userRepository.findUserByUsername(username);
     }
 
-    @Override
-    public List<User> getUsers() {
-        return userRepository.findAll();
+    public static User MapUserRequestToUser(UserRequest user) {
+        return new User(0, user.getName(), user.getUserName(), user.getPassword(), null);
     }
 
     @Override
-    public User whoami(HttpServletRequest request) {
-            return userRepository.findUserByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(request)));
+    public String addRoleToUser(String username, String roleName) {
+        if (userRepository.existsByUsername(username) || !roleName.equals(Common.ADMIN)) {
+            User user = userRepository.findUserByUsername(username);
+            Role role = roleRepository.findRoleByName(roleName);
+            List<Role> roles = user.getRoles();
+            roles.add(role);
+            user.setRoles(roles);
+            userRepository.save(user);
+        } else {
+            throw new AppException(HttpStatus.NOT_FOUND.value(), "Can't found username!");
+        }
+
+        return username;
+    }
+
+    @Override
+    public List<UserResponseDTO> getUsers() {
+        List<User> users = userRepository.findAll();
+        List<UserResponseDTO> userResponseDTOS = new ArrayList<>();
+        for (int i = 0; i < users.size(); i++) {
+            UserResponseDTO userResponseDTO = modelMapper.map(users.get(i), UserResponseDTO.class);
+            userResponseDTOS.add(userResponseDTO);
+        }
+        return userResponseDTOS;
     }
 
     public String signin(String username, String password) {
@@ -103,34 +113,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserRequest signup(UserRequest request) {
-    	User user = UserServiceImpl.MapUserRequestToUser(request);
-            if (userRepository.existsByUsername(user.getUsername())) {
-            	throw new AppException(HttpStatus.UNPROCESSABLE_ENTITY.value(), "Username is already in use");
-               
-                
-//                List<Role> roles = new ArrayList<>();
-//                List<Role> userRoleInsert = user.getRoles();
-//                for (int i = 0; i < userRoleInsert.size(); i++) {
-//                    roles.add(roleRepository.findRoleByName(userRoleInsert.get(i).getName()));
-//                }
-//                user.setRoles(roles);
-                
-//                Collection<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
-//                user.getRoles().forEach(role -> {
-//                    grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
-//                });
-//                return jwtTokenProvider.createToken(user.getUsername(), grantedAuthorities);
-                
-
-            }
-            String name = Utilities.checkEmptyString(user.getName()) ? Common.USER_NAME : user.getName();
-            user.setName(name);
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            user.setUsername(user.getUsername());
-            userRepository.save(user);
-            
-            return request;
+    public User whoami(HttpServletRequest request) {
+        return userRepository.findUserByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(request)));
     }
 
     @Override
@@ -142,24 +126,53 @@ public class UserServiceImpl implements UserService{
         });
         return jwtTokenProvider.createToken(username, grantedAuthorities);
     }
-    
-    public static User MapUserRequestToUser(UserRequest user) {
-    	return new User(0,user.getName(),user.getUserName(),user.getPassword(),null);
+
+    @Override
+    public UserRequest signup(UserRequest request) {
+        User user = UserServiceImpl.MapUserRequestToUser(request);
+        if (userRepository.existsByUsername(user.getUsername())) {
+            throw new AppException(HttpStatus.UNPROCESSABLE_ENTITY.value(), "Username is already in use");
+
+//                List<Role> roles = new ArrayList<>();
+//                List<Role> userRoleInsert = user.getRoles();
+//                for (int i = 0; i < userRoleInsert.size(); i++) {
+//                    roles.add(roleRepository.findRoleByName(userRoleInsert.get(i).getName()));
+//                }
+//                user.setRoles(roles);
+
+//                Collection<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
+//                user.getRoles().forEach(role -> {
+//                    grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+//                });
+//                return jwtTokenProvider.createToken(user.getUsername(), grantedAuthorities);
+        }
+        String name = Utilities.isEmptyString(user.getName()) ? Common.USER_NAME : user.getName();
+        user.setName(name);
+        //set default role for user
+        List<Role> roles = new ArrayList<>();
+        roles.add(roleRepository.findRoleByName(Common.USER));
+        user.setRoles(roles);
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setUsername(user.getUsername());
+        userRepository.save(user);
+
+        return request;
     }
 
-	@Override
-	public String setRoleAdmin(String userName, String roleName) {
-		if(userRepository.existsByUsername(userName) && roleName.equals(Common.ROLE_ADMIN)){
+    @Override
+    public String setRoleAdmin(String userName, String roleName) {
+        if (userRepository.existsByUsername(userName) && roleName.equals(Common.ADMIN)) {
             User user = userRepository.findUserByUsername(userName);
             Role role = roleRepository.findRoleByName(userName);
             List<Role> roles = user.getRoles();
             roles.add(role);
             user.setRoles(roles);
             userRepository.save(user);
-        }else{
+        } else {
             throw new AppException(HttpStatus.NOT_FOUND.value(), "Can't found username!");
         }
 
         return userName;
-	}
+    }
 }
