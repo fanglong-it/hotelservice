@@ -7,13 +7,21 @@ import lombok.Setter;
 
 @NoArgsConstructor
 @Getter
-@Setter
 
 public class Common {
     public static final int PAGE_SIZE = 5; //default size of the product
     public static final int PAGE_INDEX = 0; //default page index
     
+    //Role
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
+    
+    // Default value for user
+    public static final String USER_NAME = "USER";
+    
+    // Default value for overview service
     public static final String OVERVIEW_TITLE = "Hotel Service";
     public static final String OVERVIEW_IMAGE_URL = "Not Found Image";
     public static final String OVERVIEW_DESCRIPTION = "No Description";
+    
+    
 }

@@ -7,9 +7,11 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fiveman.hotelservice.dto.UserResponseDTO;
 import fiveman.hotelservice.entities.User;
+import fiveman.hotelservice.request.UserRequest;
 import fiveman.hotelservice.service.UserService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +26,7 @@ import java.util.*;
 @RequestMapping("/api/v1")
 public class UserController {
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @GetMapping("/users")
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -34,7 +36,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     @ApiOperation(value = "${UserController.getUsers}", response = User.class, authorizations = { @Authorization(value="apiKey") })
     public ResponseEntity<List<User>> getUsers(){
-        return  ResponseEntity.ok().body(userService.getUsers());
+        return ResponseEntity.ok().body(userService.getUsers());
     }
 
 
@@ -55,8 +57,8 @@ public class UserController {
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-    public String signup(@RequestBody User user){
-        return userService.signup(user);
+    public ResponseEntity<UserRequest> signup(@RequestBody UserRequest user){
+        return new ResponseEntity<UserRequest>(userService.signup(user), HttpStatus.OK);
     }
 
     @GetMapping(value = "/me")
