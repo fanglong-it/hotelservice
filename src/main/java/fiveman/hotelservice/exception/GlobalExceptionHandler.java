@@ -12,8 +12,8 @@ public class GlobalExceptionHandler {
 //    }
 
     @ExceptionHandler({AppException.class})
-    public ResponseEntity<String> AppException(AppException e){
-        return  ResponseEntity.status(e.getCode()).body(e.getMessage());
+    public ResponseEntity<String> AppException(AppException e) {
+        return ResponseEntity.status(e.getCode()).body(e.getMessage());
     }
 
     // Có thêm các @ExceptionHandler khác...

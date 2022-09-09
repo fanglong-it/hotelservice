@@ -3,15 +3,12 @@ package fiveman.hotelservice.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
-import springfox.documentation.annotations.ApiIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
-import io.swagger.annotations.ApiModelProperty;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -25,10 +22,10 @@ public class User {
     @ApiModelProperty(required = true)
     private long id;
     private String name;
-    
+
     @ApiModelProperty(required = true)
     private String username;
-    
+
     @ApiModelProperty(required = true)
     private String password;
 

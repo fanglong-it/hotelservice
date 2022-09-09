@@ -2,12 +2,8 @@ package fiveman.hotelservice.entities;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Set;
 
 @Entity
 @Data
@@ -16,7 +12,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "role")
-public class Role{
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(required = true)

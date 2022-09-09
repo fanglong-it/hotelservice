@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class AccessDenied {
     @GetMapping("/msg")
-    public String deniedMessage(){
+    public String deniedMessage() {
         return "Access Denied!";
     }
 }

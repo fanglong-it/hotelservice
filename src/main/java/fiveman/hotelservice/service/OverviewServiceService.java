@@ -1,13 +1,17 @@
 package fiveman.hotelservice.service;
 
-import java.util.List;
-
 import fiveman.hotelservice.entities.OverviewService;
 
+import java.util.List;
+
 public interface OverviewServiceService {
-	List<OverviewService> getAllOverviewService();
-	OverviewService getOverviewService(long id);
-	OverviewService addOverviewService(OverviewService overviewService);
-	OverviewService updateOverviewService(OverviewService overviewService);
-	boolean deleteOverviewService(long id);
+    List<OverviewService> getAllOverviewService();
+
+    OverviewService getOverviewService(long id);
+
+    OverviewService addOverviewService(OverviewService overviewService);
+
+    OverviewService updateOverviewService(OverviewService overviewService);
+
+    boolean deleteOverviewService(long id);
 }
