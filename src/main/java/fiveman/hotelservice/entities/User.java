@@ -7,6 +7,9 @@ import lombok.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.persistence.*;
+
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -22,7 +25,11 @@ public class User {
     @ApiModelProperty(required = true)
     private long id;
     private String name;
+    
+    @ApiModelProperty(required = true)
     private String username;
+    
+    @ApiModelProperty(required = true)
     private String password;
 
     @JsonIgnore
